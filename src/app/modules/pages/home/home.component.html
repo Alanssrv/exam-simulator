@@ -1,0 +1,13 @@
+<div class="w-100 d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <form class="w-50" [formGroup]="examForm" (ngSubmit)="onSubmit()">
+        <div class="d-flex flex-column justify-content-center mb-3">
+            <label for="time">Tempo de Prova:</label>
+            <input class="border border-secondary rounded" type="number" min="0" id="time" formControlName="timeLimit">
+        </div>
+        <div class="d-flex flex-column justify-content-center mb-3">
+            <label for="exam-questions">JSON com as questões:</label>
+            <textarea class="border border-secondary rounded" id="exam-questions" formControlName="examQuestions" rows="20" cols="50" style="white-space: pre; overflow-x: auto; overflow-wrap: normal;"></textarea>
+        </div>
+        <button class="w-100 btn btn-primary" type="submit" [disabled]="!examForm.valid">Iniciar Prova</button>
+    </form>
+</div>

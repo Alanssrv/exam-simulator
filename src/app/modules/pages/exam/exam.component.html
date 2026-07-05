@@ -1,0 +1,58 @@
+<div style="min-height: 100vh;" class="d-flex flex-column justify-content-center align-items-center">
+    <div class="w-100 row">
+        <div class="col-3">
+            <!-- Subjects navigation -->
+            @for (question of examQuestions; track $index) {
+                <button class="d-flex flex-column w-100 justify-content-center align-items-center mb-2 btn" 
+                [class.btn-outline-primary]="selectedSubjectIndex !== $index"
+                [class.btn-primary]="selectedSubjectIndex === $index"
+                (click)="changeSubject($index)">
+                    {{ question.description }}
+                </button>
+            }
+        </div>
+        <div class="col-7 d-flex flex-column">
+            <!-- Questions -->
+            <div style="min-height: 50vh;">
+                <div class="d-flex w-50 justify-content-center align-items-center flex-column m-auto">
+                    <span class="w-100">{{ examQuestions[selectedSubjectIndex].questions[selectedQuestionIndex].description }}</span>
+                    <ul class="list-unstyled d-flex w-100 flex-column gap-2 mt-3">
+                        @for (item of examQuestions[selectedSubjectIndex].questions[selectedQuestionIndex].options; track $index) {
+                            <li>
+                                <input class="me-2" type="radio" name="option" id="option-{{ $index }}" (click)="selectOption(item)" [checked]="optionChecked(item)" />
+                                <label for="option-{{ $index }}">{{ item.description }}</label>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+            <!-- Questions navigation -->
+            <div class="w-100 mt-3 d-flex justify-content-center">
+                <div class="d-flex justify-content-center align-items-center gap-5">
+                    <button class="btn" (click)="changeQuestion(selectedQuestionIndex - 1)">⟪</button>
+                    @for (index of range; track index) {
+                        <button class="btn rounded-pill p-0"
+                            [class.btn-primary]="selectedQuestionIndex === index - 1"
+                            (click)="changeQuestion(index - 1)"
+                            style="width: 40px; height: 40px;">
+                        {{ index }}
+                        </button>
+                    }
+                    <button class="btn" (click)="changeQuestion(selectedQuestionIndex + 1)">⟫</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-2 d-flex flex-column justify-content-between">
+            <!-- Action buttons -->
+            <div class="d-flex justify-content-center align-items-center flex-column">
+                <button class="w-100 btn btn-success mb-2" (click)="submitExam()">Finalizar Prova</button>
+                <button class="w-100 btn btn-danger" (click)="exitExam()">Sair</button>
+            </div>
+            <!-- Clock -->
+            <div class="d-flex justify-content-center border border-primary rounded p-2"
+                [class.border-danger]="timeLimit < 90">
+                <label class="text-primary" [class.text-danger]="timeLimit < 90">{{ timeLimit * 1000 | date: 'HH:mm:ss':'UTC' }}</label>
+            </div>
+        </div>
+    </div>
+</div>
