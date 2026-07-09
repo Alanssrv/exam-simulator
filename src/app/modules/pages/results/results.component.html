@@ -1,0 +1,76 @@
+<div style="min-height: 100vh;" class="d-flex flex-column justify-content-center align-items-center">
+    <div class="w-100 row">
+        <div class="col-3">
+            <!-- Subjects navigation -->
+            @for (question of examQuestions; track $index) {
+                <button class="d-flex flex-column w-100 justify-content-center align-items-center mb-2 btn" 
+                [class.btn-outline-primary]="selectedSubjectIndex !== $index"
+                [class.btn-primary]="selectedSubjectIndex === $index"
+                (click)="changeSubject($index)">
+                    {{ question.description }}
+                </button>
+            }
+        </div>
+        <div class="col-9">
+            <div class="gap-1 justify-content-between row m-0">
+                <div class="card justify-content-between text-bg-primary" style="width: 18%">
+                    <p class="pt-2 fw-semibold">Total de questões</p>
+                    <p>{{ totalQuestions }}</p>
+                </div>
+                <div class="card justify-content-between text-bg-info" style="width: 18%">
+                    <p class="pt-2 fw-semibold">Questões respondidas</p>
+                    <p>{{ answeredQuestions }}</p>
+                </div>
+                <div class="card justify-content-between text-bg-secondary" style="width: 18%">
+                    <p class="pt-2 fw-semibold">Questões não respondidas</p>
+                    <p>{{ unansweredQuestions }}</p>
+                </div>
+                <div class="card justify-content-between text-bg-success" style="width: 18%">
+                    <p class="pt-2 fw-semibold">Questões corretas</p>
+                    <p>{{ correctQuestions }}</p>
+                </div>
+                <div class="card justify-content-between text-bg-danger" style="width: 18%">
+                    <p class="pt-2 fw-semibold">Questões incorretas</p>
+                    <p>{{ incorrectQuestions }}</p>
+                </div>
+            </div>
+            <div id="selectedQuestionsCarousel" class="carousel slide mt-3" data-bs-ride="true">
+                <div class="carousel-inner">
+                    @if (selectedSubjectIndex !== -1) {
+                    @for (question of examQuestions[selectedSubjectIndex].questions; track $index) {
+                    <div class="carousel-item" [class.active]="$index === 0">
+                        <question-card
+                            [question]="question"
+                            [questionIndex]="$index"
+                            [checkedAnswerId]="checkedAnswerId(selectedSubjectIndex, $index)"
+                        />
+                    </div>
+                    }
+                    } @else {
+                    @for (subject of examQuestions; let subjectIndex = $index; track $index) {
+                    @for (question of subject.questions; let questionIndex = $index; track $index) {
+                    <div class="carousel-item" [class.active]="$index === 0">
+                        <question-card
+                            [question]="question"
+                            [questionIndex]="questionIndex"
+                            [subjectName]="subject.description"
+                            [checkedAnswerId]="checkedAnswerId(subjectIndex, questionIndex)"
+                        />
+                    </div>
+                    }
+                    }
+                    }
+                </div>
+                <button style="width: 5% !important;" class="carousel-control-prev" type="button" data-bs-target="#selectedQuestionsCarousel" data-bs-slide="prev">
+                    <span class="text-bg-light" aria-hidden="true">⟪</span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button style="width: 5% !important;" class="carousel-control-next" type="button" data-bs-target="#selectedQuestionsCarousel" data-bs-slide="next">
+                    <span class="text-bg-light" aria-hidden="true">⟫</span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div></div>
+</div>

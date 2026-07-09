@@ -77,6 +77,9 @@ export class ExamComponent implements OnInit {
   }
 
   changeQuestion(questionIndex: number) {
+    if (questionIndex < 0 || questionIndex >= this.examQuestions[this.selectedSubjectIndex].questions.length) {
+      return; // Out of bounds, do nothing
+    }
     this.selectedQuestionIndex = questionIndex;
     this.navigationHistory[this.selectedSubjectIndex].questionIndex = questionIndex;
   }

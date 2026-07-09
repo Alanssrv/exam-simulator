@@ -1,0 +1,9 @@
+:host {
+    input.right-answer[type="radio"] {
+        accent-color: #198754;
+    }
+
+    input.wrong-answer[type="radio"] {
+        accent-color: #dc3545;
+    }
+}

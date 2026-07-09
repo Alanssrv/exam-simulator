@@ -1,0 +1,37 @@
+@if (question != null) {
+<div class="card">
+    <div style="width: 80% !important; margin: 0 5%" class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+            <h5 class="card-title">Pergunta {{ questionIndex + 1 }}
+                @if (subjectName != null) {
+                    <label class="fs-6 fw-normal">{{ subjectName }}</label>
+                }
+            </h5>
+            <label
+                class="p-1 rounded"
+                style="font-size: 0.8rem"
+                [class.text-bg-success]="checkedAnswerId !== null && question.answerId === checkedAnswerId"
+                [class.text-bg-danger]="checkedAnswerId !== null && question.answerId !== checkedAnswerId"
+                [class.text-bg-secondary]="checkedAnswerId === null">
+                {{ checkedAnswerId !== null ? (question.answerId === checkedAnswerId ? 'Correta' : 'Incorreta') : 'Não respondida' }}
+            </label>
+        </div>
+        <p class="card-text">{{ question.description }}</p>
+        <ul class="list-unstyled">
+        @for (option of question.options; track $index) {
+            <li class="card-text pt-1">
+                <input class="me-2" type="radio" [checked]="option.optionId === checkedAnswerId || option.optionId === question.answerId"
+                    [class.right-answer]="option.optionId === question.answerId"
+                    [class.wrong-answer]="checkedAnswerId !== null && checkedAnswerId !== question.answerId && option.optionId === checkedAnswerId"
+                />
+                <label class="rounded pe-1 ps-1"
+                        [class.text-bg-success]="option.optionId === question.answerId"
+                        [class.text-bg-danger]="checkedAnswerId !== null && checkedAnswerId !== question.answerId && option.optionId === checkedAnswerId">
+                    {{ option.description }}
+                </label>
+            </li>
+        }
+        </ul>
+    </div>
+</div>
+}
