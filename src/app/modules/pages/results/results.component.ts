@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import Question from '../../entities/question';
 import Subject from '../../entities/subject';
 import { QuestionCardComponent } from './question-card/question-card.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-results',
@@ -10,6 +11,8 @@ import { QuestionCardComponent } from './question-card/question-card.component';
   styleUrl: './results.component.scss'
 })
 export class ResultsComponent implements OnInit {
+
+  private router = inject(Router);
 
   public examQuestions: Subject[] = [];
   public answersMap: { subjectIndex: number; questionIndex: number; optionId: number }[] = [];
@@ -71,14 +74,17 @@ export class ResultsComponent implements OnInit {
   ngOnInit(): void {
     const examData = localStorage.getItem('examData');
     const answersMap = localStorage.getItem('examResults');
+    if (!examData || !answersMap) {
+      this.router.navigate(['/']);
+      return;
+    }
+
     if (examData) {
       this.examQuestions = JSON.parse(JSON.parse(examData).examQuestions);
     }
     if (answersMap) {
       this.answersMap = JSON.parse(answersMap);
     }
-    console.log('Exam Questions:', this.examQuestions);
-    console.log('Answers Map:', this.answersMap);
   }
 
   changeSubject(subjectIndex: number) {
@@ -99,8 +105,10 @@ export class ResultsComponent implements OnInit {
     return null;
   }
 
-  // showCorrectAnswerId(question: Question): string | null {
-  //   const correctOption = question.options.find(option => option.optionId === question.answerId);
-  //   return correctOption ? correctOption.description : null;
-  // }
+  goToHome() {
+    localStorage.removeItem('examData');
+    localStorage.removeItem('examResults');
+
+    this.router.navigate(['/']);
+  }
 }
