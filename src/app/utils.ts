@@ -43,7 +43,6 @@ function isValidQuizSubject(value: unknown): value is Subject {
 
   return (
     typeof value['description'] === 'string' &&
-    typeof value['numberOfQuestions'] === 'number' &&
     Array.isArray(value['questions']) &&
     value['questions'].every(isValidQuestion)
   );
